@@ -13,6 +13,7 @@ import net.minecraft.network.chat.FormattedText;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class OptionsScreen extends Screen {
     private final HashMap<Button, String> buttonTooltips = new HashMap<>();
@@ -238,8 +239,7 @@ public class OptionsScreen extends Screen {
     }
 
     private void renderHelpingTip(GuiGraphicsExtractor context, Component text, int mouseX, int mouseY) {
-        context.tooltip(
-            this.font, this.font.split(FormattedText.of(text.getString()), 250).stream().map(ClientTooltipComponent::create).toList(), mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
+        context.setComponentTooltipForNextFrame(this.font, List.of(text), mouseX, mouseY);
     }
 
     @Override

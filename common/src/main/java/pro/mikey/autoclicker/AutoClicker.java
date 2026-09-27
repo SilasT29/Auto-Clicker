@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -14,12 +15,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -36,9 +37,9 @@ public class AutoClicker {
     private static final KeyMapping.Category KEYBIND_CATEGORY =
             KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "keybinding-title"));
     public static final KeyMapping openConfig =
-            new KeyMapping("keybinding.open-gui", GLFW.GLFW_KEY_O, KEYBIND_CATEGORY);
+            new KeyMapping("keybinding.open-gui", InputConstants.KEY_O, KEYBIND_CATEGORY);
     public static final KeyMapping toggleHolding =
-            new KeyMapping("keybinding.toggle-hold", GLFW.GLFW_KEY_I, KEYBIND_CATEGORY);
+            new KeyMapping("keybinding.toggle-hold", InputConstants.KEY_I, KEYBIND_CATEGORY);
 
     private static final Supplier<Pair<Path, Path>> CONFIG_PATHS = Suppliers.memoize(() -> {
         Path configDir = Paths.get(Minecraft.getInstance().gameDirectory.getPath() + "/config");
@@ -254,7 +255,7 @@ public class AutoClicker {
             if(!(config.getLeftClick().isRespectShield() && isShielding(mc.player))) {
                 mc.gameMode.attack(mc.player, ((EntityHitResult) rayTrace).getEntity());
                 if (mc.player != null) {
-                    mc.player.swing(InteractionHand.MAIN_HAND);
+                    mc.player.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, true);
                 }
             }
         }
